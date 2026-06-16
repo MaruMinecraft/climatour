@@ -229,7 +229,6 @@ export function HomePage() {
               <span className="eyebrow">{dict.toursFound}</span>
               <h2>{filteredTours.length} / {mockTours.length}</h2>
             </div>
-            <p>{dict.metricsHint}</p>
           </div>
 
           {filteredTours.length === 0 ? (
