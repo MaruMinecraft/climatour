@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="Phuket tropical island illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#82cfe5"/>
+      <stop offset="1" stop-color="#e3e0a5"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#1e8b85"/>
+      <stop offset="1" stop-color="#65c7b8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#sky)"/>
+  <path d="M0 390c152-66 282-82 390-48 116 36 198 118 332 116 160-3 286-103 478-60v362H0z" fill="url(#water)"/>
+  <path d="M0 604c244-80 392-38 576-12 230 32 426 6 624-72v240H0z" fill="#f2cf8f"/>
+  <path d="M332 376c88-96 190-146 306-150 106 8 208 58 304 150z" fill="#2f7e54"/>
+  <path d="M430 376c52-54 112-82 180-84 76 6 140 34 194 84z" fill="#1f5f44"/>
+  <path d="M254 554c48-80 120-132 216-156" fill="none" stroke="#7c4d2e" stroke-width="20" stroke-linecap="round"/>
+  <path d="M456 398c-74 8-138 40-192 96M462 396c-16-70 4-130 60-180M474 402c70-42 146-52 228-30" fill="none" stroke="#2f8c5a" stroke-width="24" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-label="Sharm El Sheikh Red Sea illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#7bc9e5"/>
+      <stop offset="1" stop-color="#f5d28f"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#2b9ac2"/>
+      <stop offset="1" stop-color="#0e6f80"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#sky)"/>
+  <circle cx="180" cy="128" r="70" fill="#fff0b3"/>
+  <path d="M0 346l204-128 154 116 124-72 154 116 126-82 438 148v316H0z" fill="#c98c52"/>
+  <path d="M0 478h1200v282H0z" fill="url(#sea)"/>
+  <path d="M0 590c158 30 298 22 420-24 180-68 334-68 512-6 91 32 177 36 268 8v192H0z" fill="#f1c983"/>
+  <path d="M236 582c36-28 75-28 116 0M768 536c44-36 96-36 144 0" fill="none" stroke="#fdf8e7" stroke-width="12" stroke-linecap="round"/>
+  <path d="M540 608c18-33 52-46 88-38 14-38 50-58 94-47" fill="none" stroke="#ff7e66" stroke-width="16" stroke-linecap="round"/>
+  <path d="M820 634c28-26 68-26 96 0" fill="none" stroke="#ffd166" stroke-width="14" stroke-linecap="round"/>
+</svg>
