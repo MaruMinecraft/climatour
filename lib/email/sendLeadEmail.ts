@@ -1,4 +1,4 @@
-import { mockTours } from "@/data/mockTours";
+import { getTourCopy, mockTours } from "@/data/mockTours";
 import type { LeadPayload } from "@/types/travel";
 
 export interface SendLeadEmailResult {
@@ -32,6 +32,7 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<SendLeadEmail
     return { sent: false, placeholder: true };
   }
 
+  const tourCopy = getTourCopy(tour, payload.locale);
   const nodemailer = await import("nodemailer");
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -44,13 +45,13 @@ export async function sendLeadEmail(payload: LeadPayload): Promise<SendLeadEmail
   await transporter.sendMail({
     from,
     to,
-    subject: `Climatour lead: ${tour.title}`,
+    subject: `Climatour lead: ${tourCopy.title}`,
     text: [
       "New Climatour request",
       "",
-      `Tour: ${tour.title}`,
-      `Destination: ${tour.country}, ${tour.city}`,
-      `Hotel: ${tour.hotelName}`,
+      `Tour: ${tourCopy.title}`,
+      `Destination: ${tourCopy.country}, ${tourCopy.city}`,
+      `Hotel: ${tourCopy.hotelName}`,
       `Dates: ${tour.startDate} - ${tour.endDate}`,
       `Price: ${tour.price} RUB`,
       "",

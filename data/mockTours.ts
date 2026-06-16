@@ -1,4 +1,4 @@
-import type { Tour } from "@/types/travel";
+import type { Locale, Tour } from "@/types/travel";
 
 const images: Record<string, string> = {
   antalya: "/destinations/antalya.jpg",
@@ -8,6 +8,71 @@ const images: Record<string, string> = {
   bali: "/destinations/bali.jpg",
   sochi: "/destinations/sochi.jpg"
 };
+
+const countryLabels: Record<string, Record<Locale, string>> = {
+  Egypt: { ru: "Египет", en: "Egypt" },
+  Indonesia: { ru: "Индонезия", en: "Indonesia" },
+  Russia: { ru: "Россия", en: "Russia" },
+  Thailand: { ru: "Таиланд", en: "Thailand" },
+  Turkey: { ru: "Турция", en: "Turkey" },
+  UAE: { ru: "ОАЭ", en: "UAE" }
+};
+
+const cityLabels: Record<string, Record<Locale, string>> = {
+  Antalya: { ru: "Анталья", en: "Antalya" },
+  Bali: { ru: "Бали", en: "Bali" },
+  Dubai: { ru: "Дубай", en: "Dubai" },
+  Phuket: { ru: "Пхукет", en: "Phuket" },
+  "Sharm El Sheikh": { ru: "Шарм-эль-Шейх", en: "Sharm El Sheikh" },
+  Sochi: { ru: "Сочи", en: "Sochi" }
+};
+
+const includedLabels: Record<string, Record<Locale, string>> = {
+  "All inclusive": { ru: "Все включено", en: "All inclusive" },
+  Breakfast: { ru: "Завтраки", en: "Breakfast" },
+  Flight: { ru: "Перелет", en: "Flight" },
+  "Half board": { ru: "Полупансион", en: "Half board" },
+  Hotel: { ru: "Отель", en: "Hotel" },
+  Transfer: { ru: "Трансфер", en: "Transfer" }
+};
+
+const ruTourDescriptions: Record<string, string> = {
+  "antalya-lara-family": "Спокойный пляжный отдых по системе все включено: мелкая вода, бассейны и короткий трансфер.",
+  "antalya-belek-golf": "Зеленая курортная зона для комфортных пляжных дней и неспешных вечерних прогулок.",
+  "antalya-old-town": "Компактная поездка с пляжными утрами, вечерами в старом городе и прогулками вдоль побережья.",
+  "antalya-kemer": "Пляжный курорт среди сосновых склонов, морских прогулок и более прохладных вечеров.",
+  "dubai-jumeirah": "Городской пляжный отдых с моллами, ресторанами и удобной инфраструктурой отеля.",
+  "dubai-marina": "Поездка с фокусом на город: вечера у воды и дневные планы в кондиционированном комфорте.",
+  "dubai-family-palm": "Семейный курорт с бассейнами, детским клубом и удобным выходом к пляжу.",
+  "dubai-stopover": "Короткий городской перерыв с видами на небоскребы и вечерними экскурсиями.",
+  "sharm-naama": "Классический отдых на Красном море: теплая вода, пляжный ритм и вечерний променад.",
+  "sharm-reef": "Пляжная неделя для снорклинга с домашним рифом и тихими вечерами.",
+  "sharm-family": "Семейный курорт с водными горками, детским клубом и простым доступом к пляжу.",
+  "sharm-sinai": "Пляжная база для морских прогулок и коротких экскурсий в пустыню.",
+  "phuket-karon": "Тропическая пляжная поездка рядом с кафе и длинной песчаной береговой линией.",
+  "phuket-kata-family": "Семейный отель с бассейном, спокойным районом и гибким планом питания.",
+  "phuket-island-hop": "Бюджетная база для поездок по островам, рынков и активных вечеров.",
+  "phuket-quiet": "Более тихий уголок Пхукета для медленных утр, прогулок по пляжу и локальных кафе.",
+  "bali-nusa-dua": "Аккуратный пляжный курорт со спокойным ритмом и надежной отельной инфраструктурой.",
+  "bali-ubud": "Зеленое размещение в глубине острова для прогулок, кафе, храмов и поездок на день.",
+  "bali-canggu": "Пляжные кафе, закаты и расслабленный островной ритм.",
+  "bali-family": "Более мягкая пляжная зона со спокойным темпом и семейными отелями.",
+  "sochi-imereti": "Отдых на Черном море с набережной, пляжами и удобным трансфером из аэропорта.",
+  "sochi-family": "Семейная поездка с бассейном, доступом к пляжу и короткими переездами.",
+  "sochi-rosa": "Горный воздух, прогулки, канатные дороги и прохладные вечера недалеко от моря.",
+  "sochi-short": "Короткий городской уикенд у моря: прогулки, кафе и быстрые выходы на пляж."
+};
+
+export function getTourCopy(tour: Tour, locale: Locale) {
+  return {
+    city: cityLabels[tour.city]?.[locale] ?? tour.city,
+    country: countryLabels[tour.country]?.[locale] ?? tour.country,
+    description: locale === "ru" ? (ruTourDescriptions[tour.id] ?? tour.description) : tour.description,
+    hotelName: tour.hotelName,
+    included: tour.included.map((item) => includedLabels[item]?.[locale] ?? item),
+    title: tour.title
+  };
+}
 
 export const mockTours: Tour[] = [
   {
