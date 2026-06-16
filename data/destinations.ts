@@ -11,7 +11,7 @@ export const destinations: Destination[] = [
     timezone: "Europe/Istanbul",
     climateSummary: "Warm Mediterranean coast with long beach season and dry summer weather.",
     bestTimeToGo: "May-June and September-October are the most balanced months for beach and family trips.",
-    image: "/destinations/antalya.svg"
+    image: "/destinations/antalya.jpg"
   },
   {
     id: "dubai",
@@ -23,7 +23,7 @@ export const destinations: Destination[] = [
     timezone: "Asia/Dubai",
     climateSummary: "Sunny and dry most of the year, with very hot summer months.",
     bestTimeToGo: "November-March are the most comfortable months for beach, city walks and excursions.",
-    image: "/destinations/dubai.svg"
+    image: "/destinations/dubai.jpg"
   },
   {
     id: "sharm",
@@ -35,7 +35,7 @@ export const destinations: Destination[] = [
     timezone: "Africa/Cairo",
     climateSummary: "Dry Red Sea resort with warm water, strong sun and rare rainfall.",
     bestTimeToGo: "March-May and October-November are the most comfortable periods for beach and snorkeling.",
-    image: "/destinations/sharm.svg"
+    image: "/destinations/sharm.jpg"
   },
   {
     id: "phuket",
@@ -47,7 +47,7 @@ export const destinations: Destination[] = [
     timezone: "Asia/Bangkok",
     climateSummary: "Tropical island weather with warm sea, high humidity and seasonal rain risk.",
     bestTimeToGo: "December-March usually has the clearest beach weather.",
-    image: "/destinations/phuket.svg"
+    image: "/destinations/phuket.jpg"
   },
   {
     id: "bali",
@@ -59,7 +59,7 @@ export const destinations: Destination[] = [
     timezone: "Asia/Makassar",
     climateSummary: "Tropical island climate with warm weather, humid air and stronger rain season in winter.",
     bestTimeToGo: "May-September are usually better for beaches, walks and road trips.",
-    image: "/destinations/bali.svg"
+    image: "/destinations/bali.jpg"
   },
   {
     id: "sochi",
@@ -71,7 +71,7 @@ export const destinations: Destination[] = [
     timezone: "Europe/Moscow",
     climateSummary: "Black Sea coast with mild winters, warm summers and humid subtropical influence.",
     bestTimeToGo: "June-September for beach trips; April-May and October for walks and excursions.",
-    image: "/destinations/sochi.svg"
+    image: "/destinations/sochi.jpg"
   }
 ];
 

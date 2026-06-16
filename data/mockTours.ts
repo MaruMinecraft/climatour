@@ -1,12 +1,12 @@
 import type { Tour } from "@/types/travel";
 
 const images: Record<string, string> = {
-  antalya: "/destinations/antalya.svg",
-  dubai: "/destinations/dubai.svg",
-  sharm: "/destinations/sharm.svg",
-  phuket: "/destinations/phuket.svg",
-  bali: "/destinations/bali.svg",
-  sochi: "/destinations/sochi.svg"
+  antalya: "/destinations/antalya.jpg",
+  dubai: "/destinations/dubai.jpg",
+  sharm: "/destinations/sharm.jpg",
+  phuket: "/destinations/phuket.jpg",
+  bali: "/destinations/bali.jpg",
+  sochi: "/destinations/sochi.jpg"
 };
 
 export const mockTours: Tour[] = [

@@ -23,7 +23,7 @@ export function TourCard({ tour, locale, scenario, selected, onToggleCompare }: 
 
   return (
     <article className="tour-card">
-      <Image alt={`${tour.city} ${tour.hotelName}`} height={420} src={tour.image} unoptimized width={760} />
+      <Image alt={`${tour.city} ${tour.hotelName}`} height={420} src={tour.image} width={760} />
       <div className="tour-card-body">
         <div className="tour-card-heading">
           <div>

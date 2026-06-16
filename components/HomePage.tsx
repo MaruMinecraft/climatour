@@ -149,8 +149,7 @@ export function HomePage() {
           <Image
             alt="Antalya coast"
             height={760}
-            src="/destinations/antalya.svg"
-            unoptimized
+            src="/destinations/antalya.jpg"
             width={1000}
           />
         </div>

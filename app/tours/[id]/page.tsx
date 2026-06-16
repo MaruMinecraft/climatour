@@ -58,7 +58,7 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
       </header>
 
       <section className="tour-hero">
-        <Image alt={`${tour.city} ${tour.hotelName}`} height={760} src={tour.image} unoptimized width={1000} />
+        <Image alt={`${tour.city} ${tour.hotelName}`} height={760} src={tour.image} width={1000} />
         <div className="tour-hero-content">
           <span className="eyebrow">
             {tour.country} / {tour.city}
