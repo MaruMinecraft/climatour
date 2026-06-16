@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { destinationById } from "@/data/destinations";
+import { destinationById, getDestinationCopy } from "@/data/destinations";
 import { mockWeatherByDestination } from "@/data/mockWeather";
-import { tourById } from "@/data/mockTours";
+import { getTourCopy, tourById } from "@/data/mockTours";
 import { ForecastStrip } from "@/components/ForecastStrip";
 import { LeadForm } from "@/components/LeadForm";
 import { RecommendationPanel } from "@/components/RecommendationPanel";
@@ -45,6 +45,9 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
     notFound();
   }
 
+  const tourCopy = getTourCopy(tour, locale);
+  const destinationCopy = getDestinationCopy(destination, locale);
+
   return (
     <main>
       <header className="topbar">
@@ -58,17 +61,17 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
       </header>
 
       <section className="tour-hero">
-        <Image alt={`${tour.city} ${tour.hotelName}`} height={760} src={tour.image} width={1000} />
+        <Image alt={`${tourCopy.city} ${tourCopy.hotelName}`} height={760} src={tour.image} width={1000} />
         <div className="tour-hero-content">
           <span className="eyebrow">
-            {tour.country} / {tour.city}
+            {tourCopy.country} / {tourCopy.city}
           </span>
-          <h1>{tour.title}</h1>
-          <p>{tour.description}</p>
+          <h1>{tourCopy.title}</h1>
+          <p>{tourCopy.description}</p>
           <div className="tour-hero-meta">
             <strong>{formatCurrency(tour.price, locale)}</strong>
             <span>{tour.duration} {dict.nights}</span>
-            <span>{tour.hotelName}</span>
+            <span>{tourCopy.hotelName}</span>
             <span>{scenarioLabels[locale][scenario]}</span>
           </div>
           <WeatherBadge
@@ -88,7 +91,7 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
             <div className="section-heading compact">
               <div>
                 <span className="eyebrow">{dict.forecast}</span>
-                <h2>{destination.city}</h2>
+                <h2>{destinationCopy.city}</h2>
               </div>
               <p>{dict.legal}</p>
             </div>
@@ -116,13 +119,13 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
           <section className="detail-section two-column">
             <div>
               <span className="eyebrow">{dict.bestTime}</span>
-              <h2>{destination.bestTimeToGo}</h2>
-              <p>{destination.climateSummary}</p>
+              <h2>{destinationCopy.bestTimeToGo}</h2>
+              <p>{destinationCopy.climateSummary}</p>
             </div>
             <div>
               <span className="eyebrow">{dict.included}</span>
               <ul className="included-list">
-                {tour.included.map((item) => (
+                {tourCopy.included.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>

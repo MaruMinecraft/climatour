@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { destinations } from "@/data/destinations";
-import { mockTours } from "@/data/mockTours";
+import { destinations, getDestinationCopy } from "@/data/destinations";
+import { getTourCopy, mockTours } from "@/data/mockTours";
 import { mockWeatherByDestination } from "@/data/mockWeather";
 import { formatCurrency, getDictionary, scenarioLabels } from "@/lib/i18n/dictionaries";
 import { getAverageWeather } from "@/lib/weather/recommendation";
@@ -109,11 +109,15 @@ export function HomePage() {
                 onChange={(event) => updateFilter("destinationId", event.target.value)}
               >
                 <option value="any">{dict.anywhere}</option>
-                {destinations.map((destination) => (
-                  <option key={destination.id} value={destination.id}>
-                    {destination.country} / {destination.city}
-                  </option>
-                ))}
+                {destinations.map((destination) => {
+                  const copy = getDestinationCopy(destination, locale);
+
+                  return (
+                    <option key={destination.id} value={destination.id}>
+                      {copy.country} / {copy.city}
+                    </option>
+                  );
+                })}
               </select>
             </label>
             <label>
@@ -265,7 +269,7 @@ export function HomePage() {
           <div className="comparison-items">
             {comparedTours.map((tour) => (
               <Link href={`/tours/${tour.id}?lang=${locale}&scenario=${filters.scenario}`} key={tour.id}>
-                {tour.city} · {formatCurrency(tour.price, locale)}
+                {getTourCopy(tour, locale).city} · {formatCurrency(tour.price, locale)}
               </Link>
             ))}
           </div>

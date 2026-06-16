@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatCurrency, getDictionary, scenarioLabels } from "@/lib/i18n/dictionaries";
 import { buildWeatherRecommendation } from "@/lib/weather/recommendation";
 import { mockWeatherByDestination } from "@/data/mockWeather";
+import { getTourCopy } from "@/data/mockTours";
 import { WeatherBadge } from "@/components/WeatherBadge";
 import type { Locale, Tour, TravelScenario } from "@/types/travel";
 
@@ -20,24 +21,25 @@ export function TourCard({ tour, locale, scenario, selected, onToggleCompare }: 
   const dict = getDictionary(locale);
   const weather = mockWeatherByDestination[tour.destinationId];
   const recommendation = buildWeatherRecommendation(scenario, weather.forecast, locale);
+  const copy = getTourCopy(tour, locale);
 
   return (
     <article className="tour-card">
-      <Image alt={`${tour.city} ${tour.hotelName}`} height={420} src={tour.image} width={760} />
+      <Image alt={`${copy.city} ${copy.hotelName}`} height={420} src={tour.image} width={760} />
       <div className="tour-card-body">
         <div className="tour-card-heading">
           <div>
             <span className="eyebrow">
-              {tour.country} / {tour.city}
+              {copy.country} / {copy.city}
             </span>
-            <h3>{tour.title}</h3>
+            <h3>{copy.title}</h3>
           </div>
           <strong>{formatCurrency(tour.price, locale)}</strong>
         </div>
-        <p>{tour.description}</p>
+        <p>{copy.description}</p>
         <div className="meta-row">
           <span>{tour.duration} {dict.nights}</span>
-          <span>{tour.hotelName}</span>
+          <span>{copy.hotelName}</span>
           <span>{scenarioLabels[locale][scenario]}</span>
         </div>
         <div className="card-weather-row">
