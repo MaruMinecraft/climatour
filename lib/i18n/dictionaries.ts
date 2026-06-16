@@ -67,8 +67,7 @@ export const dictionaries = {
     weatherFallback: "Погода временно недоступна, туры можно смотреть без прогноза.",
     back: "К подбору",
     included: "Включено",
-    legal: "Прогноз является справочной информацией и не гарантирует фактическую погоду.",
-    metricsHint: "MVP оцениваем по заявкам и использованию weather-фильтров."
+    legal: "Прогноз является справочной информацией и не гарантирует фактическую погоду."
   },
   en: {
     appName: "Climatour",
@@ -121,8 +120,7 @@ export const dictionaries = {
     weatherFallback: "Weather is temporarily unavailable, tours remain available without forecast.",
     back: "Back to search",
     included: "Included",
-    legal: "Forecast is reference information and does not guarantee actual weather.",
-    metricsHint: "MVP success is measured by requests and weather-filter usage."
+    legal: "Forecast is reference information and does not guarantee actual weather."
   }
 } as const;
 
