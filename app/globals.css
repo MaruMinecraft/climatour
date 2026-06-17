@@ -1,3 +1,19 @@
+@font-face {
+  font-display: swap;
+  font-family: "Gropled";
+  font-style: normal;
+  font-weight: 700 900;
+  src: url("/fonts/gropled-bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ziyad Askar";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/fonts/ziyad-askar-regular.ttf") format("truetype");
+}
+
 :root {
   --bg: #fff6de;
   --surface: #fffaf0;
