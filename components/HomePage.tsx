@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { destinations, getDestinationCopy } from "@/data/destinations";
 import { getTourCopy, mockTours } from "@/data/mockTours";
 import { mockWeatherByDestination } from "@/data/mockWeather";
@@ -10,19 +9,21 @@ import { formatCurrency, getDictionary, scenarioLabels } from "@/lib/i18n/dictio
 import { getAverageWeather } from "@/lib/weather/recommendation";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { TourCard } from "@/components/TourCard";
+import { ComparisonTable } from "@/components/ComparisonTable";
 import type { Locale, SearchFilters, Tour, TravelScenario } from "@/types/travel";
+
+const TOUR_LIMIT = 16;
 
 const initialFilters: SearchFilters = {
   destinationId: "any",
   startDate: "2026-06-20",
   endDate: "2026-06-27",
   budget: 300000,
-  scenario: "beach",
+  scenario: null,
   minTemp: 20,
-  maxTemp: 31,
+  maxTemp: 38,
   noRain: false,
-  lowWind: false,
-  comfortableHumidity: false
+  lowWind: false
 };
 
 function filterTours(tours: Tour[], filters: SearchFilters) {
@@ -30,33 +31,12 @@ function filterTours(tours: Tour[], filters: SearchFilters) {
     const weather = mockWeatherByDestination[tour.destinationId];
     const averageWeather = getAverageWeather(weather.forecast);
 
-    if (filters.destinationId !== "any" && tour.destinationId !== filters.destinationId) {
-      return false;
-    }
-
-    if (tour.price > filters.budget) {
-      return false;
-    }
-
-    if (!tour.tags.includes(filters.scenario)) {
-      return false;
-    }
-
-    if (averageWeather.temperature < filters.minTemp || averageWeather.temperature > filters.maxTemp) {
-      return false;
-    }
-
-    if (filters.noRain && averageWeather.precipitationProbability > 35) {
-      return false;
-    }
-
-    if (filters.lowWind && averageWeather.windSpeed > 9) {
-      return false;
-    }
-
-    if (filters.comfortableHumidity && averageWeather.humidity > 75) {
-      return false;
-    }
+    if (filters.destinationId !== "any" && tour.destinationId !== filters.destinationId) return false;
+    if (tour.price > filters.budget) return false;
+    if (filters.scenario !== null && !tour.tags.includes(filters.scenario)) return false;
+    if (averageWeather.temperature < filters.minTemp || averageWeather.temperature > filters.maxTemp) return false;
+    if (filters.noRain && averageWeather.precipitationProbability > 35) return false;
+    if (filters.lowWind && averageWeather.windSpeed > 9) return false;
 
     return true;
   });
@@ -65,9 +45,14 @@ function filterTours(tours: Tour[], filters: SearchFilters) {
 export function HomePage() {
   const [locale, setLocale] = useState<Locale>("ru");
   const [filters, setFilters] = useState<SearchFilters>(initialFilters);
+  const [tempInputs, setTempInputs] = useState({ minTemp: String(initialFilters.minTemp), maxTemp: String(initialFilters.maxTemp) });
   const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [showComparison, setShowComparison] = useState(false);
   const dict = getDictionary(locale);
-  const filteredTours = useMemo(() => filterTours(mockTours, filters), [filters]);
+
+  const allFiltered = useMemo(() => filterTours(mockTours, filters), [filters]);
+  const filteredTours = allFiltered.slice(0, TOUR_LIMIT);
+
   const comparedTours = compareIds
     .map((id) => mockTours.find((tour) => tour.id === id))
     .filter((tour): tour is Tour => Boolean(tour));
@@ -76,12 +61,16 @@ export function HomePage() {
     setFilters((current) => ({ ...current, [key]: value }));
   }
 
+  function toggleScenario(scenario: TravelScenario) {
+    setFilters((current) => ({
+      ...current,
+      scenario: current.scenario === scenario ? null : scenario
+    }));
+  }
+
   function toggleCompare(tourId: string) {
     setCompareIds((current) => {
-      if (current.includes(tourId)) {
-        return current.filter((id) => id !== tourId);
-      }
-
+      if (current.includes(tourId)) return current.filter((id) => id !== tourId);
       return [...current.slice(-2), tourId];
     });
   }
@@ -111,7 +100,6 @@ export function HomePage() {
                 <option value="any">{dict.anywhere}</option>
                 {destinations.map((destination) => {
                   const copy = getDestinationCopy(destination, locale);
-
                   return (
                     <option key={destination.id} value={destination.id}>
                       {copy.country} / {copy.city}
@@ -168,13 +156,16 @@ export function HomePage() {
                 <button
                   className={scenario === filters.scenario ? "active" : ""}
                   key={scenario}
-                  onClick={() => updateFilter("scenario", scenario)}
+                  onClick={() => toggleScenario(scenario)}
                   type="button"
                 >
                   {scenarioLabels[locale][scenario]}
                 </button>
               ))}
             </div>
+            {filters.scenario === null && (
+              <span className="scenario-hint">{dict.scenarioAny}</span>
+            )}
           </div>
 
           <div className="filter-group">
@@ -184,16 +175,26 @@ export function HomePage() {
                 max={38}
                 min={10}
                 type="number"
-                value={filters.minTemp}
-                onChange={(event) => updateFilter("minTemp", Number(event.target.value))}
+                value={tempInputs.minTemp}
+                onChange={(event) => {
+                  const raw = event.target.value;
+                  setTempInputs((prev) => ({ ...prev, minTemp: raw }));
+                  const num = parseInt(raw, 10);
+                  if (raw !== "" && !isNaN(num)) updateFilter("minTemp", num);
+                }}
               />
               <span>—</span>
               <input
                 max={40}
                 min={12}
                 type="number"
-                value={filters.maxTemp}
-                onChange={(event) => updateFilter("maxTemp", Number(event.target.value))}
+                value={tempInputs.maxTemp}
+                onChange={(event) => {
+                  const raw = event.target.value;
+                  setTempInputs((prev) => ({ ...prev, maxTemp: raw }));
+                  const num = parseInt(raw, 10);
+                  if (raw !== "" && !isNaN(num)) updateFilter("maxTemp", num);
+                }}
               />
             </div>
           </div>
@@ -206,23 +207,17 @@ export function HomePage() {
             <input checked={filters.lowWind} onChange={(event) => updateFilter("lowWind", event.target.checked)} type="checkbox" />
             <span>{dict.lowWind}</span>
           </label>
-          <label className="checkbox-row">
-            <input
-              checked={filters.comfortableHumidity}
-              onChange={(event) => updateFilter("comfortableHumidity", event.target.checked)}
-              type="checkbox"
-            />
-            <span>{dict.comfortableHumidity}</span>
-          </label>
 
           <div className="active-filter-box">
             <span className="eyebrow">{dict.activeFilters}</span>
             <div className="chip-row">
-              <span>{scenarioLabels[locale][filters.scenario]}</span>
+              {filters.scenario
+                ? <span>{scenarioLabels[locale][filters.scenario]}</span>
+                : <span>{dict.scenarioAny}</span>
+              }
               <span>{filters.minTemp}-{filters.maxTemp}°C</span>
               {filters.noRain && <span>{dict.noRain}</span>}
               {filters.lowWind && <span>{dict.lowWind}</span>}
-              {filters.comfortableHumidity && <span>{dict.comfortableHumidity}</span>}
             </div>
           </div>
         </aside>
@@ -230,8 +225,7 @@ export function HomePage() {
         <section className="catalog-content">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">{dict.toursFound}</span>
-              <h2>{filteredTours.length} / {mockTours.length}</h2>
+              <span className="eyebrow">{dict.toursFound}: {filteredTours.length} / 24</span>
             </div>
           </div>
 
@@ -268,15 +262,35 @@ export function HomePage() {
           </div>
           <div className="comparison-items">
             {comparedTours.map((tour) => (
-              <Link href={`/tours/${tour.id}?lang=${locale}&scenario=${filters.scenario}`} key={tour.id}>
+              <span key={tour.id} className="comparison-chip">
                 {getTourCopy(tour, locale).city} · {formatCurrency(tour.price, locale)}
-              </Link>
+              </span>
             ))}
           </div>
-          <button className="secondary-button" onClick={() => setCompareIds([])} type="button">
-            {dict.clear}
-          </button>
+          <div className="comparison-bar-actions">
+            {comparedTours.length >= 2 && (
+              <button
+                className="primary-button"
+                onClick={() => setShowComparison(true)}
+                type="button"
+              >
+                {dict.comparison}
+              </button>
+            )}
+            <button className="secondary-button" onClick={() => setCompareIds([])} type="button">
+              {dict.clear}
+            </button>
+          </div>
         </div>
+      )}
+
+      {showComparison && (
+        <ComparisonTable
+          tours={comparedTours}
+          locale={locale}
+          scenario={filters.scenario}
+          onClose={() => setShowComparison(false)}
+        />
       )}
     </main>
   );

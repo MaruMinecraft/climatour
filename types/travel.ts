@@ -57,7 +57,7 @@ export interface WeatherForecastDay {
 
 export interface WeatherSnapshot extends WeatherForecastDay {
   destinationId: string;
-  source: "mock";
+  source: "mock" | "open-meteo";
   updatedAt: string;
 }
 
@@ -81,12 +81,11 @@ export interface SearchFilters {
   startDate: string;
   endDate: string;
   budget: number;
-  scenario: TravelScenario;
+  scenario: TravelScenario | null;
   minTemp: number;
   maxTemp: number;
   noRain: boolean;
   lowWind: boolean;
-  comfortableHumidity: boolean;
 }
 
 export interface LeadPayload {

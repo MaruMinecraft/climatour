@@ -1,4 +1,4 @@
-import { getDictionary, scenarioLabels } from "@/lib/i18n/dictionaries";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale, WeatherRecommendation } from "@/types/travel";
 
 interface RecommendationPanelProps {
@@ -11,12 +11,8 @@ export function RecommendationPanel({ recommendation, locale }: RecommendationPa
 
   return (
     <section className={`recommendation-panel ${recommendation.status}`}>
-      <div>
-        <span className="eyebrow">{scenarioLabels[locale][recommendation.scenario]}</span>
+      <div className="recommendation-header">
         <h3>{recommendation.summary}</h3>
-      </div>
-      <div className="score-ring" aria-label={`Score ${recommendation.score}`}>
-        {recommendation.score}
       </div>
       <div className="recommendation-grid">
         <div>
