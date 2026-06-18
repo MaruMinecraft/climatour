@@ -12,7 +12,7 @@ import type { Locale, Tour, TravelScenario } from "@/types/travel";
 interface TourCardProps {
   tour: Tour;
   locale: Locale;
-  scenario: TravelScenario;
+  scenario: TravelScenario | null;
   selected: boolean;
   onToggleCompare: (tourId: string) => void;
 }
@@ -20,7 +20,8 @@ interface TourCardProps {
 export function TourCard({ tour, locale, scenario, selected, onToggleCompare }: TourCardProps) {
   const dict = getDictionary(locale);
   const weather = mockWeatherByDestination[tour.destinationId];
-  const recommendation = buildWeatherRecommendation(scenario, weather.forecast, locale);
+  const effectiveScenario: TravelScenario = scenario ?? (tour.tags[0] as TravelScenario) ?? "beach";
+  const recommendation = buildWeatherRecommendation(effectiveScenario, weather.forecast, locale);
   const copy = getTourCopy(tour, locale);
 
   return (
@@ -40,7 +41,7 @@ export function TourCard({ tour, locale, scenario, selected, onToggleCompare }: 
         <div className="meta-row">
           <span>{tour.duration} {dict.nights}</span>
           <span>{copy.hotelName}</span>
-          <span>{scenarioLabels[locale][scenario]}</span>
+          <span>{tour.tags.map((t) => scenarioLabels[locale][t]).join(", ")}</span>
         </div>
         <div className="card-weather-row">
           <WeatherBadge
@@ -59,7 +60,7 @@ export function TourCard({ tour, locale, scenario, selected, onToggleCompare }: 
           >
             {selected ? dict.selected : dict.compare}
           </button>
-          <Link className="primary-button" href={`/tours/${tour.id}?lang=${locale}&scenario=${scenario}`}>
+          <Link className="primary-button" href={`/tours/${tour.id}?lang=${locale}${scenario ? `&scenario=${scenario}` : ""}`}>
             {dict.details}
           </Link>
         </div>

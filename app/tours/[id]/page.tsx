@@ -10,6 +10,7 @@ import { RecommendationPanel } from "@/components/RecommendationPanel";
 import { WeatherBadge } from "@/components/WeatherBadge";
 import { formatCurrency, getDictionary, scenarioLabels } from "@/lib/i18n/dictionaries";
 import { buildWeatherRecommendation, getAverageWeather } from "@/lib/weather/recommendation";
+import { fetchWeatherForDestination } from "@/lib/weather/openmeteo";
 import type { Locale, TravelScenario } from "@/types/travel";
 
 interface TourPageProps {
@@ -29,21 +30,21 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const tour = tourById.get(id);
 
-  if (!tour) {
-    notFound();
-  }
+  if (!tour) notFound();
 
   const locale = normalizeLocale(query.lang);
   const scenario = normalizeScenario(query.scenario);
   const dict = getDictionary(locale);
   const destination = destinationById.get(tour.destinationId);
-  const weather = mockWeatherByDestination[tour.destinationId];
+
+  const liveWeather = await fetchWeatherForDestination(tour.destinationId);
+  const weather = liveWeather ?? mockWeatherByDestination[tour.destinationId];
+  const isLive = liveWeather !== null;
+
   const recommendation = buildWeatherRecommendation(scenario, weather.forecast, locale);
   const averageWeather = getAverageWeather(weather.forecast);
 
-  if (!destination) {
-    notFound();
-  }
+  if (!destination) notFound();
 
   const tourCopy = getTourCopy(tour, locale);
   const destinationCopy = getDestinationCopy(destination, locale);
@@ -73,6 +74,7 @@ export default async function TourPage({ params, searchParams }: TourPageProps) 
             <span>{tour.duration} {dict.nights}</span>
             <span>{tourCopy.hotelName}</span>
             <span>{scenarioLabels[locale][scenario]}</span>
+            {isLive && <span className="live-badge">{dict.weatherLive}</span>}
           </div>
           <WeatherBadge
             condition={weather.current.condition}
