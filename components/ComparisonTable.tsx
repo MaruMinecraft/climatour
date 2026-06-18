@@ -7,7 +7,7 @@ import { mockWeatherByDestination } from "@/data/mockWeather";
 import { getTourCopy } from "@/data/mockTours";
 import { formatCurrency, getDictionary, scenarioLabels } from "@/lib/i18n/dictionaries";
 import { getAverageWeather } from "@/lib/weather/recommendation";
-import type { DestinationWeather, Locale, Tour, TravelScenario } from "@/types/travel";
+import type { DestinationWeather, Locale, Tour, TravelScenario, WeatherCondition } from "@/types/travel";
 
 interface ComparisonTableProps {
   tours: Tour[];
@@ -126,7 +126,7 @@ export function ComparisonTable({ tours, locale, scenario, onClose }: Comparison
         const daily = data.daily;
         const cur = data.current;
 
-        function wmcToCondition(wmc: number): string {
+        function wmcToCondition(wmc: number): WeatherCondition {
           if (wmc === 0) return "sunny";
           if (wmc <= 3) return "partly-cloudy";
           if (wmc <= 48) return "cloudy";
@@ -156,7 +156,7 @@ export function ComparisonTable({ tours, locale, scenario, onClose }: Comparison
               humidity: Math.round(cur.relativehumidity_2m ?? 60),
               windSpeed: Math.round(cur.windspeed_10m),
               precipitationProbability: Math.round(cur.precipitation_probability ?? 0),
-              condition: wmcToCondition(cur.weathercode) as any,
+              condition: wmcToCondition(cur.weathercode),
               icon: "sun",
               source: "open-meteo",
               updatedAt: new Date().toISOString()

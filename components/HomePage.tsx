@@ -52,7 +52,6 @@ export function HomePage() {
 
   const allFiltered = useMemo(() => filterTours(mockTours, filters), [filters]);
   const filteredTours = allFiltered.slice(0, TOUR_LIMIT);
-  const totalFiltered = allFiltered.length;
 
   const comparedTours = compareIds
     .map((id) => mockTours.find((tour) => tour.id === id))
