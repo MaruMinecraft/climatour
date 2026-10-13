@@ -1,0 +1,36 @@
+name: Next.js CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-and-build:
+    name: Check application and build Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check TypeScript
+        run: npx tsc --noEmit
+
+      - name: Check ESLint
+        run: npx eslint .
+
+      - name: Build Docker image
+        run: docker build -t climatour:ci .
