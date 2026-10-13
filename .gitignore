@@ -10,4 +10,6 @@ yarn-error.log*
 pnpm-debug.log*
 tsconfig.tsbuildinfo
 .idea
+.env.*
+!.env.example
 
